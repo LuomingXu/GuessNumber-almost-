@@ -21,19 +21,18 @@ void PrintSmallMeau();
 void PrintMeauNum();
 void Rank(GuessNumber Game[]);
 void PrintRankList(GuessNumber Game[]);
-void UpdateUserInfo(GuessNumber Game[], char GameName[], int grade);
 void InitializeStruct(GuessNumber Game[]);
+void UpdateUserInfo(GuessNumber Game[], char GameName[], int grade);
 
 int main()
 {
-	int MeauSelectedNumber = 0;	//菜单选择的数字
+	int MeauSelectedNumber = 10;	//菜单选择的数字
 	char GamerName[20];	//暂存用户姓名
 	GuessNumber Game[11];	//用户信息的struct
 
 	InitializeStruct(Game);
 
 	PrintMeau();
-	//printf("%d\n", ScanfNums());
 	MeauSelectedNumber = ScanfNum();
 
 	while (MeauSelectedNumber != 1)
@@ -42,7 +41,7 @@ int main()
 		MeauSelectedNumber = ScanfNum();
 	}
 
-	while (MeauSelectedNumber != -1)
+	while (MeauSelectedNumber != 0)
 	{
 		switch (MeauSelectedNumber)
 		{
@@ -61,9 +60,9 @@ int main()
 					printf("恭喜您猜对了\n");
 					//将此用户与排行榜内的用户比较, 若是高于排行榜内用户则将此赋值进struct内
 					UpdateUserInfo(Game, GamerName, grade);
-					printf("进行排序\n");
+					printf("***进行排序***\n");
 					Rank(Game);//输入了新的数据, 需要进行排序
-					printf("排序完成\n");
+					printf("***排序完成***\n");
 				}
 				else
 				{
@@ -110,11 +109,11 @@ int ScanfNums()
 	char temp[100];
 	int nums = 0;
 
-	/*while (1)
+	while (1)
 	{
 		switch (choice)
 		{
-			case 1:*/
+			case 1:
 				printf("请输入\n");
 				gets_s(temp, 100);
 
@@ -136,8 +135,8 @@ int ScanfNums()
 					else
 						break;
 				}
-				//printf("您输入的数是: %d\n", nums);
-			/*	break;
+				printf("您输入的数是: %d\n", nums);
+				break;
 			case 2:
 				break;
 			default:
@@ -148,7 +147,7 @@ int ScanfNums()
 		choice = ScanfNum();
 		if (choice == 2)
 			break;
-	}*/
+	}
 
 	return nums;
 }
@@ -161,7 +160,7 @@ int MainGame()
 	int TheNumber = 0;//系统随机出一个数 
 	srand((unsigned)time(NULL));//定义时间种子，不能定义在for循环之中，若如此，就为伪随机
 	TheNumber = rand() % 101;
-	TheNumber = 10;
+	//TheNumber = 10;//测试用猜数数字
 	printf("********************游戏开始********************\n");
 	printf("请输入您猜的数\n");
 
@@ -176,16 +175,16 @@ int MainGame()
 	while (Number != TheNumber)
 	{
 		if (Number > TheNumber)
-			printf("第%d猜数;大了\n", count);
+			printf("第%d次猜数;大了\n", count);
 		else if (Number < TheNumber)
-			printf("第%d猜数;小了\n", count);
+			printf("第%d次猜数;小了\n", count);
 
 		if (count == 10)
 		{
 			return count + 1;
 		}
 
-		printf("请输入您新猜的数\n");
+		printf("请输入您第%d次新猜的数\n", count + 1);
 		Number = ScanfNums();
 
 		while (Number <1 || Number >100)//确保用户输入的是1-100的数 
@@ -204,10 +203,10 @@ void PrintRankList(GuessNumber Game[])
 {
 	printf("\n");
 	printf("\n");
-	printf("名次\t姓名\t最高分\t总得分\n");
-	for (int i = 0; i < 11; i++)
+	printf("%6s%6s%9s%9s\n","名次","用户","最高分","总分数");
+	for (int i = 0; i < 10; i++)
 	{
-		printf("%d\t%s\t%d\t%d\n", i + 1, Game[i].GamerName, Game[i].grade, Game[i].totalGrade);
+		printf("%6d%6s%9d%9d\n", i + 1, Game[i].GamerName, Game[i].grade, Game[i].totalGrade);
 	}
 }
 //对struct排序
@@ -215,6 +214,7 @@ void Rank(GuessNumber Game[])
 {
 	int k = 0, l = 0, change;
 	char temp[20];
+
 	for (k = 0; k < 10; k++)
 	{
 		for (l = 0; l < 10 - k; l++)
@@ -248,12 +248,13 @@ void UpdateUserInfo(GuessNumber Game[], char GameName[], int grade)
 				worstGrade = Game[i].grade;
 		}
 	}
-	printf("worstGrade:%d\n", worstGrade);
-	if (grade<worstGrade)
+
+	if (grade <= worstGrade)
 	{
 		printf("成绩太差上不了榜单\n", worstGrade);
 		return;
 	}
+
 	for (int i = 0; i < 10; i++)
 	{
 		if (strcmp(Game[i].GamerName, GameName) == 0)
@@ -273,10 +274,6 @@ void UpdateUserInfo(GuessNumber Game[], char GameName[], int grade)
 		Game[10].grade = grade;
 		Game[10].totalGrade += grade;
 	}
-
-	printf("update:\n");
-	PrintRankList(Game);
-	printf("update-OVER:\n");
 }
 //初始化struct
 void InitializeStruct(GuessNumber Game[])
@@ -297,7 +294,7 @@ void PrintMeau()
 	printf("1.输入玩家姓名\n");
 	printf("2.打印排行榜\n");
 	printf(".最多可以保存10组用户数据\n");
-	printf(".输入\"-1\"退出\n");
+	printf(".输入\"0\"退出\n");
 }
 //次菜单打印
 void PrintSmallMeau()
@@ -307,7 +304,7 @@ void PrintSmallMeau()
 	printf("1.输入玩家姓名\n");
 	printf("2.打印排行榜\n");
 	printf(".最多可以保存10组用户数据\n");
-	printf(".输入\"-1\"退出\n");
+	printf(".输入\"0\"退出\n");
 }
 //打印输入数字的菜单
 void PrintMeauNum()
