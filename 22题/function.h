@@ -86,10 +86,10 @@ void PrintRankList(GuessNumber Game[])
 {
 	printf("\n");
 	printf("\n");
-	printf("%6s%10s%9s%9s\n", "名次", "用户", "最高分", "总分数");
+	printf("%4s%10s%9s%9s\n", "名次", "用户", "最高分", "总分数");
 	for (int i = 0; i < 10; i++)
 	{
-		printf("%6d%10s%9d%9d\n", i + 1, Game[i].GamerName, Game[i].grade, Game[i].totalGrade);
+		printf("%4d%10s%9d%9d\n", i + 1, Game[i].GamerName, Game[i].grade, Game[i].totalGrade);
 	}
 }
 //对struct排序
@@ -104,7 +104,7 @@ void Rank(GuessNumber Game[])
 	for (k = 1; k < 11 && changed == true; k++)
 	{
 		changed = false;
-		for (l = 0; l < 10 - k; l++)
+		for (l = 0; l < 11 - k; l++)
 		{
 			if (Game[l].grade < Game[l + 1].grade)
 			{

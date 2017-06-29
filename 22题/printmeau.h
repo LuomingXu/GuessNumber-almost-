@@ -22,7 +22,7 @@ void PrintMeau()
 	printf("3.保存排行榜到\"C:\\\\RankList.txt\"\n");
 	printf("P.S. 最多可以保存10组用户数据\n");
 	printf("     输入\"0\"退出\n");
-	printf("Copyright ©  2017 Xu Luoming.All Right Reserved");
+	printf("Copyright @  2017 Xu Luoming.All Right Reserved\n");//C语言似乎不能显示©, 那就只能退而求其次了...
 }
 //次菜单打印
 void PrintSmallMeau()
@@ -50,13 +50,13 @@ void PrintExit()
 	printf("\n");
 	printf("********************欢迎使用*******************\n");
 	printf("**********************再见!********************\n");
-	printf("Copyright ©  2017 Xu Luoming.All Right Reserved");
+	printf("Copyright @  2017 Xu Luoming.All Right Reserved\n");
 }
 //打印退出菜单
 void PrintExitMeau()
 {
 	printf("\n");
-	printf("********确定退出请按\"0\"********\n");
+	printf("********确认退出请按\"0\"********\n");
 	printf("*******取消其他单个数字*********\n");
 }
 //文件系统的菜单选择
@@ -81,7 +81,7 @@ void PrintError(int i)
 		printf("请输入\"单个\"数字\n");
 		break;
 	case 4:
-		printf("第一个字符必须为不为\"零\"数字\n");
+		printf("第一个字符必须为不为\"0\"数字\n");
 		break;
 	default:
 		printf("不存在此错误代码\n");
