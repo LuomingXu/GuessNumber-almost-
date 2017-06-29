@@ -1,4 +1,4 @@
-#include<stdio.h>
+ï»¿#include<stdio.h>
 #include<stdlib.h>
 #include"printmeau.h"
 #include"function.h"
@@ -6,9 +6,10 @@
 
 int main()
 {
-	int MeauSelectedNumber = 10;//²Ëµ¥Ñ¡ÔñµÄÊı×Ö
-	char GamerName[20];//Ôİ´æÓÃ»§ĞÕÃû
-	GuessNumber Game[11];//ÓÃ»§ĞÅÏ¢µÄstruct
+	int RandomNum = 0;
+	int MeauSelectedNumber = 10;//èœå•é€‰æ‹©çš„æ•°å­—
+	char GamerName[20];//æš‚å­˜ç”¨æˆ·å§“å
+	GuessNumber Game[11];//ç”¨æˆ·ä¿¡æ¯çš„struct
 	InitializeStruct(Game);
 
 	ReadRankList(Game);
@@ -19,30 +20,31 @@ int main()
 		switch (MeauSelectedNumber)
 		{
 			case 1:
-				//°ÑÒ»¸öĞÕÃû±£´æµ½charµÄÊı×éÀïÃæ
-				printf("ÇëÊäÈëÍæ¼ÒĞÕÃû\n");
+				//æŠŠä¸€ä¸ªå§“åä¿å­˜åˆ°charçš„æ•°ç»„é‡Œé¢
+				printf("è¯·è¾“å…¥ç©å®¶å§“å\n");
 				gets_s(GamerName, 20);
 
-				//Õâ±ß²åÈëÓÎÏ·µÄÖ÷³ÌĞò
-				int count = MainGame();
+				//è¿™è¾¹æ’å…¥æ¸¸æˆçš„ä¸»ç¨‹åº
+				int count = MainGame(&RandomNum);
 				
-				//¼ÆËã·ÖÊı
+				//è®¡ç®—åˆ†æ•°
 				int grade = 0;
 				if (count <= 10)
 				{
 					grade = 100 / count;
-					printf("\n¹§Ï²Äú²Â¶ÔÁË\n");
-					printf("Äú×Ü¹²²ÂÁË\"%d\"´Î\n", count);
-					//½«´ËÓÃ»§ÓëÅÅĞĞ°ñÄÚµÄÓÃ»§±È½Ï, ÈôÊÇ¸ßÓÚÅÅĞĞ°ñÄÚÓÃ»§Ôò½«´Ë¸³Öµ½østructÄÚ
+					printf("\næ­å–œæ‚¨çŒœå¯¹äº†\n");
+					printf("ç³»ç»Ÿçš„éšæœºæ•°æ˜¯: %d\n", RandomNum);
+					printf("æ‚¨æ€»å…±çŒœäº†\"%d\"æ¬¡\n", count);
+					//å°†æ­¤ç”¨æˆ·ä¸æ’è¡Œæ¦œå†…çš„ç”¨æˆ·æ¯”è¾ƒ, è‹¥æ˜¯é«˜äºæ’è¡Œæ¦œå†…ç”¨æˆ·åˆ™å°†æ­¤èµ‹å€¼è¿›structå†…
 					UpdateUserInfo(Game, GamerName, grade);
-					printf("***½øĞĞÅÅĞò***\n");
-					Rank(Game);//ÊäÈëÁËĞÂµÄÊı¾İ, ĞèÒª½øĞĞÅÅĞò
-					printf("***ÅÅĞòÍê³É***\n");
+					printf("***è¿›è¡Œæ’åº***\n");
+					Rank(Game);//è¾“å…¥äº†æ–°çš„æ•°æ®, éœ€è¦è¿›è¡Œæ’åº
+					printf("***æ’åºå®Œæˆ***\n");
 				}
 				else
 				{
-					printf("********Ê§°Ü********\n");
-					printf("Äú²ÂÊıµÄ´ÎÊı¹ı¶à, »ñµÃÁã·Ö\n");
+					printf("********å¤±è´¥********\n");
+					printf("æ‚¨çŒœæ•°çš„æ¬¡æ•°è¿‡å¤š, è·å¾—é›¶åˆ†\n");
 				}
 				break;
 			case 2:
@@ -52,7 +54,7 @@ int main()
 				SaveRankList(Game);
 				break;
 			default:
-				printf("²»´æÔÚ´ËÑ¡Ïî!\n");
+				printf("ä¸å­˜åœ¨æ­¤é€‰é¡¹!\n");
 				break;
 		}
 

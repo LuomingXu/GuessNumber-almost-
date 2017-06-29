@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #ifndef __SCAN_H__
 #define __SCAN_H__
 
@@ -11,7 +11,7 @@
 int ScanfNum();
 int ScanfNums();
 
-//È·±£ÊäÈëµÄÊÇµ¥¸öÊı×Ö
+//ç¡®ä¿è¾“å…¥çš„æ˜¯å•ä¸ªæ•°å­—
 int ScanfNum()
 {
 	char temp[CHAR_MAX];
@@ -26,7 +26,7 @@ int ScanfNum()
 
 	return temp[0] - '0';
 }
-//È·±£ÊäÈëµÄÊÇÊı
+//ç¡®ä¿è¾“å…¥çš„æ˜¯æ•°
 int ScanfNums()
 {
 	int choice = 1;
@@ -38,7 +38,7 @@ int ScanfNums()
 		switch (choice)
 		{
 		case 1:
-			printf("ÇëÊäÈë: \n");
+			printf("è¯·è¾“å…¥: \n");
 			gets_s(temp, 100);
 
 			nums = temp[0] - '0';
@@ -59,12 +59,12 @@ int ScanfNums()
 				else
 					break;
 			}
-			printf("ÄúÊäÈëµÄÊıÊÇ: %d\n", nums);
+			printf("æ‚¨è¾“å…¥çš„æ•°æ˜¯: %d\n", nums);
 			break;
 		case 2:
 			break;
 		default:
-			printf("Ã»ÓĞ´ËÑ¡Ïî!\n");
+			printf("æ²¡æœ‰æ­¤é€‰é¡¹!\n");
 			break;
 		}
 		PrintMeauNum();

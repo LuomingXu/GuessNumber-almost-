@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #ifndef __FUNCTION_H__
 #define __FUNCTION_H__
 
@@ -6,10 +6,12 @@
 #include<time.h>
 #include<stdlib.h>
 #include<string.h>
+#include<stdbool.h>
+#include<time.h>//ä¸ºäº†æµ‹è¯•æ’åºæ‰€ç”¨æ—¶é—´çš„include
 #include"printmeau.h"
 #include"scan.h"
 
-//¶¨Òåstruct
+//å®šä¹‰struct
 typedef struct MyStruct
 {
 	char GamerName[20];
@@ -17,7 +19,7 @@ typedef struct MyStruct
 	int totalGrade;
 }GuessNumber;
 
-int MainGame();
+int MainGame(int* RandomNumber);
 int SelectNum();
 void Rank(GuessNumber Game[]);
 void PrintRankList(GuessNumber Game[]);
@@ -26,20 +28,26 @@ void UpdateUserInfo(GuessNumber Game[], char GameName[], int grade);
 void ReadRankList(GuessNumber Game[]);
 void SaveRankList(GuessNumber Game[]);
 
-//Ö÷ÓÎÏ·³ÌĞò
-int MainGame()
+clock_t start, finish;
+double duration;
+
+//ä¸»æ¸¸æˆç¨‹åº
+int MainGame(int* RandomNumber)
 {
-	int Number = 0;//ÓÃ»§ÊäÈëµÄÊı 
-	int count = 0;//¼ÇÂ¼ÓÃ»§²ÂÁË¼¸´ÎµÄÊı 
+	int Number = 0;//ç”¨æˆ·è¾“å…¥çš„æ•° 
+	int count = 0;//è®°å½•ç”¨æˆ·çŒœäº†å‡ æ¬¡çš„æ•° 
 
-	int TheNumber = 0;//ÏµÍ³Ëæ»ú³öÒ»¸öÊı 
-	srand((unsigned)time(NULL));//¶¨ÒåÊ±¼äÖÖ×Ó£¬²»ÄÜ¶¨ÒåÔÚforÑ­»·Ö®ÖĞ£¬ÈôÈç´Ë£¬¾ÍÎªÎ±Ëæ»ú
+	int TheNumber = 0;//ç³»ç»Ÿéšæœºå‡ºä¸€ä¸ªæ•° 
+	srand((unsigned)time(NULL));//å®šä¹‰æ—¶é—´ç§å­ï¼Œä¸èƒ½å®šä¹‰åœ¨forå¾ªç¯ä¹‹ä¸­ï¼Œè‹¥å¦‚æ­¤ï¼Œå°±ä¸ºä¼ªéšæœº
 	TheNumber = rand() % 101;
-	TheNumber = 10;//²âÊÔÓÃ²ÂÊıÊı×Ö
-	printf("********************ÓÎÏ·¿ªÊ¼********************\n");
-	printf("ÇëÊäÈëÄú²ÂµÄÊı\n");
 
-	while (Number <1 || Number >100)//È·±£ÓÃ»§ÊäÈëµÄÊÇ1-100µÄÊı 
+	//TheNumber = 10;//æµ‹è¯•ç”¨çŒœæ•°æ•°å­—
+	*RandomNumber = TheNumber;//å°†ç³»ç»Ÿéšæœºå‡ºçš„æ•°ä¼ å›mainå‡½æ•°
+
+	printf("********************æ¸¸æˆå¼€å§‹********************\n");
+	printf("è¯·è¾“å…¥æ‚¨çŒœçš„æ•°\n");
+
+	while (Number <1 || Number >100)//ç¡®ä¿ç”¨æˆ·è¾“å…¥çš„æ˜¯1-100çš„æ•° 
 	{
 		PrintError(2);
 		Number = ScanfNums();
@@ -50,19 +58,19 @@ int MainGame()
 	while (Number != TheNumber)
 	{
 		if (Number > TheNumber)
-			printf("µÚ%d´Î²ÂÊı;´óÁË\n", count);
+			printf("ç¬¬%dæ¬¡çŒœæ•°;å¤§äº†\n", count);
 		else if (Number < TheNumber)
-			printf("µÚ%d´Î²ÂÊı;Ğ¡ÁË\n", count);
+			printf("ç¬¬%dæ¬¡çŒœæ•°;å°äº†\n", count);
 
 		if (count == 10)
 		{
 			return count + 1;
 		}
 		printf("********************************\n");
-		printf("******ÇëÊäÈëÄúµÚ%d´ÎĞÂ²ÂµÄÊı******\n", count + 1);
+		printf("******è¯·è¾“å…¥æ‚¨ç¬¬%dæ¬¡æ–°çŒœçš„æ•°******\n", count + 1);
 		Number = ScanfNums();
 
-		while (Number <1 || Number >100)//È·±£ÓÃ»§ÊäÈëµÄÊÇ1-100µÄÊı 
+		while (Number <1 || Number >100)//ç¡®ä¿ç”¨æˆ·è¾“å…¥çš„æ˜¯1-100çš„æ•° 
 		{
 			PrintError(2);
 			Number = ScanfNums();
@@ -73,72 +81,82 @@ int MainGame()
 
 	return count;
 }
-//´òÓ¡ÅÅĞĞ°ñ
+//æ‰“å°æ’è¡Œæ¦œ
 void PrintRankList(GuessNumber Game[])
 {
 	printf("\n");
 	printf("\n");
-	printf("%6s%10s%9s%9s\n", "Ãû´Î", "ÓÃ»§", "×î¸ß·Ö", "×Ü·ÖÊı");
+	printf("%6s%10s%9s%9s\n", "åæ¬¡", "ç”¨æˆ·", "æœ€é«˜åˆ†", "æ€»åˆ†æ•°");
 	for (int i = 0; i < 10; i++)
 	{
 		printf("%6d%10s%9d%9d\n", i + 1, Game[i].GamerName, Game[i].grade, Game[i].totalGrade);
 	}
 }
-//¶ÔstructÅÅĞò
+//å¯¹structæ’åº
 void Rank(GuessNumber Game[])
 {
 	int k = 0, l = 0;
 	GuessNumber temp[1];
+	bool changed = true;
 
-	for (k = 0; k < 10; k++)
+	start = clock();
+	//æ’åºæ—¶ä»¥æœ€é«˜åˆ†ä¸ºæœ€ä¼˜å…ˆ
+	for (k = 1; k < 11 && changed == true; k++)
 	{
+		changed = false;
 		for (l = 0; l < 10 - k; l++)
 		{
 			if (Game[l].grade < Game[l + 1].grade)
 			{
-				/*change = Game[l].grade;
-				Game[l].grade = Game[l + 1].grade;
-				Game[l + 1].grade = change;
-				change = Game[l].totalGrade;
-				Game[l].totalGrade = Game[l + 1].totalGrade;
-				Game[l + 1].totalGrade = change;
-				strcpy_s(temp, 20, Game[l].GamerName);
-				strcpy_s(Game[l].GamerName, 20, Game[l + 1].GamerName);
-				strcpy_s(Game[l + 1].GamerName, 20, temp);*/
-
 				temp[0] = Game[l];
 				Game[l] = Game[l + 1];
 				Game[l + 1] = temp[0];
+				changed = true;
 			}
-		}
-	}
+			else if (Game[l].grade == Game[l + 1].grade && Game[l].totalGrade < Game[l + 1].totalGrade)//æ€»åˆ†ä¸ºäºšçº§çš„æ’åº
+			{
+				temp[0] = Game[l];
+				Game[l] = Game[l + 1];
+				Game[l + 1] = temp[0];
+				changed = true;
+			}
+			else if (Game[l].grade == Game[l + 1].grade && Game[l].totalGrade == Game[l + 1].totalGrade && strcmp(Game[l].GamerName,Game[l + 1].GamerName) > 0)
+			{//åå­—ä¸ºæ¬¡çº§çš„æ’åº
+				temp[0] = Game[l];
+				Game[l] = Game[l + 1];
+				Game[l + 1] = temp[0];
+				changed = true;
+			}
+		}//for-l
+	}//for-k
+	finish = clock();
+	duration = (double)(finish - start) / CLOCKS_PER_SEC;
+	printf(__FUNCTION__": Time: %5.3fms\n", duration * 10000);
+
 }
-//¸üĞÂstruct
+//æ›´æ–°struct
 void UpdateUserInfo(GuessNumber Game[], char GameName[], int grade)
 {
 	int count = 0;
-	int worstGrade = 0;
+	int worstGrade = Game[9].grade;
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 9; i++)
 	{
-		for (int j = 0; j < 10 - i - 1; j++)
-		{
-			if (Game[i].grade < Game[i + 1].grade)
-				worstGrade = Game[i].grade;
-		}
+		if (worstGrade > Game[i].grade)
+			worstGrade = Game[i].grade;
 	}
 
-	if (grade <= worstGrade)
+	if (grade < worstGrade)
 	{
-		printf("³É¼¨Ì«²îÉÏ²»ÁË°ñµ¥\n×î²î·ÖÊı:%d\n", worstGrade);
+		printf("æˆç»©å¤ªå·®ä¸Šä¸äº†æ¦œå•\næœ€å·®åˆ†æ•°:%d\n", worstGrade);
 		return;
 	}
-
+	//æ‰¾åˆ°å¦‚æœåŸæ¥å°±å­˜åœ¨æ­¤ç”¨æˆ·çš„æ•°æ®
 	for (int i = 0; i < 10; i++)
 	{
 		if (strcmp(Game[i].GamerName, GameName) == 0)
 		{
-			if (Game[i].grade < grade)//Èç¹ûĞÂ·ÖÊı±ÈÔ­À´µÄ¸ß, ¾ÍÌæ»»
+			if (Game[i].grade < grade)//å¦‚æœæ–°åˆ†æ•°æ¯”åŸæ¥çš„é«˜, å°±æ›¿æ¢
 			{
 				Game[i].grade = grade;
 			}
@@ -146,7 +164,7 @@ void UpdateUserInfo(GuessNumber Game[], char GameName[], int grade)
 			count++;
 		}
 	}
-
+	//å¦‚æœæ²¡æœ‰æ‰¾åˆ°, å°±åœ¨[10]é‡Œé¢æ·»åŠ 
 	if (count == 0)
 	{
 		strcpy_s(Game[10].GamerName, 20, GameName);
@@ -154,18 +172,18 @@ void UpdateUserInfo(GuessNumber Game[], char GameName[], int grade)
 		Game[10].totalGrade += grade;
 	}
 }
-//³õÊ¼»¯struct
+//åˆå§‹åŒ–struct
 void InitializeStruct(GuessNumber Game[])
 {
 	for (int i = 0; i < 11; i++)
 	{
-		//³õÊ¼»¯
-		strcpy_s(Game[i].GamerName, 20, "ÎŞ");
+		//åˆå§‹åŒ–
+		strcpy_s(Game[i].GamerName, 20, "æ— ");
 		Game[i].grade = 0;
 		Game[i].totalGrade = 0;
 	}
 }
-//¶ÁÈ¡±£´æµÄÅÅĞĞ°ñÊı¾İ
+//è¯»å–ä¿å­˜çš„æ’è¡Œæ¦œæ•°æ®
 void ReadRankList(GuessNumber Game[])
 {
 	FILE *fp = NULL;
@@ -176,12 +194,12 @@ void ReadRankList(GuessNumber Game[])
 		errno_t err = fopen_s(&fp, "c:\\RankList.txt", "r");
 		if (err == 0)
 		{
-			printf("³É¹¦´ò¿ªÅÅĞĞ°ñÎÄ¼ş\n");
+			printf("æˆåŠŸæ‰“å¼€æ’è¡Œæ¦œæ–‡ä»¶\n");
 			break;
 		}
 		else
 		{
-			printf("´ò¿ªÅÅĞĞ°ñÎÄ¼şÊ§°Ü\n");
+			printf("æ‰“å¼€æ’è¡Œæ¦œæ–‡ä»¶å¤±è´¥\n");
 		}
 
 		PrintFileChoice();
@@ -196,20 +214,20 @@ void ReadRankList(GuessNumber Game[])
 	int temp;
 	for (int i = 0; i < 10; i++)
 	{
-		fscanf_s(fp, "%d%s%d%d", &temp, Game[i].GamerName, 10, //ÒòÎªÊÇfscanf_sº¯Êı, ËùÒÔÕâ¸ö20ÊÇÓÃÀ´È·±£Ö»¶ÁÈ¡10µÄ×Ö·û½øÈëGame[i].GamerName
+		fscanf_s(fp, "%d%s%d%d", &temp, Game[i].GamerName, 10, //å› ä¸ºæ˜¯fscanf_så‡½æ•°, æ‰€ä»¥è¿™ä¸ª20æ˜¯ç”¨æ¥ç¡®ä¿åªè¯»å–10çš„å­—ç¬¦è¿›å…¥Game[i].GamerName
 			&Game[i].grade, &Game[i].totalGrade);
 		count++;
 	}
 	
 	if (count == 10)
 	{
-		printf("¶ÁÈ¡ÅÅĞĞ°ñÍê³É\n");
+		printf("è¯»å–æ’è¡Œæ¦œå®Œæˆ\n");
 	}
 
 	fclose(fp);
 	return;
 }
-//ÏòÎÄ¼ş±£´æÅÅĞĞ°ñÊı¾İ
+//å‘æ–‡ä»¶ä¿å­˜æ’è¡Œæ¦œæ•°æ®
 void SaveRankList(GuessNumber Game[])
 {
 	FILE *fpTemp = NULL, *fp= NULL;
@@ -220,21 +238,21 @@ void SaveRankList(GuessNumber Game[])
 		errno_t err = fopen_s(&fp, "c:\\RankList.txt", "w");
 		if (err == 0)
 		{
-			printf("³É¹¦´ò¿ªÎÄ¼ş\n");
+			printf("æˆåŠŸæ‰“å¼€æ–‡ä»¶\n");
 			break;
 		}
 		else
 		{
-			printf("´ò¿ªÎÄ¼şÊ§°Ü\n");
-			printf("ÕıÔÚ´´½¨ÎÄ¼ş\n");
+			printf("æ‰“å¼€æ–‡ä»¶å¤±è´¥\n");
+			printf("æ­£åœ¨åˆ›å»ºæ–‡ä»¶\n");
 			errno_t errTemp = fopen_s(&fpTemp, "c:\\RankList.txt", "a+");
 			if (errTemp == 0)
 			{
-				printf("³É¹¦´´½¨ÎÄ¼ş\n");
+				printf("æˆåŠŸåˆ›å»ºæ–‡ä»¶\n");
 			}
 			else
 			{
-				printf("´´½¨ÎÄ¼şÊ§°Ü\n");
+				printf("åˆ›å»ºæ–‡ä»¶å¤±è´¥\n");
 			}
 			fclose(fpTemp);
 		}
@@ -256,14 +274,14 @@ void SaveRankList(GuessNumber Game[])
 
 	if (count == 10)
 	{
-		printf("±£´æÅÅĞĞ°ñÍê³É\n");
+		printf("ä¿å­˜æ’è¡Œæ¦œå®Œæˆ\n");
 	}
 
 	fclose(fp);
 	system("attrib +h c:\\RankList.txt");
 	return;
 }
-//³õÊ¼²Ëµ¥Ñ¡Ïî
+//åˆå§‹èœå•é€‰é¡¹
 int SelectNum()
 {
 	int MeauSelectedNumber = 10;
