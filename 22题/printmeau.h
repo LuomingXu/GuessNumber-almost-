@@ -64,7 +64,7 @@ void PrintFileChoice()
 {
 	printf("\n");
 	printf("**************退出请按\"0\"************\n");
-	printf("****继续尝试打开\/保存请按其他单个数字****\n");
+	printf("****继续尝试打开/保存请按其他单个数字****\n");
 }
 //错误信息警告
 void PrintError(int i)
@@ -81,7 +81,7 @@ void PrintError(int i)
 		printf("请输入\"单个\"数字\n");
 		break;
 	case 4:
-		printf("第一个字符必须为不为\"0\"数字\n");
+		printf("第一个字符必须为不为\"0\"的数字\n");
 		break;
 	default:
 		printf("不存在此错误代码\n");

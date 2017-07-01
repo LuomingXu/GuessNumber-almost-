@@ -1,5 +1,4 @@
 ﻿#include<stdio.h>
-#include<stdlib.h>
 #include"printmeau.h"
 #include"function.h"
 #include"scan.h"

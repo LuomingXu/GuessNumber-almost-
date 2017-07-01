@@ -45,6 +45,7 @@ int MainGame(int* RandomNumber)
 	*RandomNumber = TheNumber;//将系统随机出的数传回main函数
 
 	printf("********************游戏开始********************\n");
+	printf("程序已随机出一个1-100的数");
 	printf("请输入您猜的数\n");
 
 	while (Number <1 || Number >100)//确保用户输入的是1-100的数 
@@ -214,7 +215,7 @@ void ReadRankList(GuessNumber Game[])
 	int temp;
 	for (int i = 0; i < 10; i++)
 	{
-		fscanf_s(fp, "%d%s%d%d", &temp, Game[i].GamerName, 10, //因为是fscanf_s函数, 所以这个20是用来确保只读取10的字符进入Game[i].GamerName
+		fscanf_s(fp, "%d%s%d%d", &temp, Game[i].GamerName, 20, //因为是"_s"的函数, 所以这个20是用来确保只读取20的字符进入Game[i].GamerName
 			&Game[i].grade, &Game[i].totalGrade);
 		count++;
 	}
@@ -268,6 +269,7 @@ void SaveRankList(GuessNumber Game[])
 	int count = 0;
 	for (int i = 0; i < 10; i++)
 	{
+		//在打印时要为scanf考虑, 在之间一定要留空格, 因为你并不知道这6, 10个字符是否占满了, 若是占满了, 字符之间就没有空格了, 就会出现错误
 		fprintf_s(fp, "%6d %10s %9d %9d\n", i + 1, Game[i].GamerName, Game[i].grade, Game[i].totalGrade);
 		count++;
 	}
