@@ -41,7 +41,7 @@ int MainGame(int* RandomNumber)
 	srand((unsigned)time(NULL));//定义时间种子，不能定义在for循环之中，若如此，就为伪随机
 	TheNumber = rand() % 101;
 
-	//TheNumber = 10;//测试用猜数数字
+	TheNumber = 10;//测试用猜数数字
 	*RandomNumber = TheNumber;//将系统随机出的数传回main函数
 
 	printf("********************游戏开始********************\n");
@@ -237,6 +237,8 @@ void ReadRankList(GuessNumber Game[])
 void SaveRankList(GuessNumber Game[])
 {
 	FILE *fpTemp = NULL, *fp= NULL;
+
+	system("attrib -h c:\\RankList.txt");//由于在保存的时候添加了异常属性, 所以在再次打开的时候需要去除
 
 	int choice = 1;
 	while (1)
