@@ -57,7 +57,7 @@ void PrintExitMeau()
 {
 	printf("\n");
 	printf("********确认退出请按\"0\"********\n");
-	printf("*******取消其他单个数字*********\n");
+	printf("*******取消其按单个数字*********\n");
 }
 //文件系统的菜单选择
 void PrintFileChoice()
