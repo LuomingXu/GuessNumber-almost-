@@ -18,9 +18,7 @@ int ScanfNum()
 
 	gets_s(temp, CHAR_MAX);
 
-	char Chinese = temp[0];
-
-	while (Chinese < 0 || isdigit(temp[0]) == 0 || strlen(temp) > 1)
+	while (temp[0] < 0 || isdigit(temp[0]) == 0 || strlen(temp) > 1)
 	{
 		PrintError(3);
 		gets_s(temp, CHAR_MAX);
@@ -44,16 +42,14 @@ int ScanfNums()
 			printf("请输入: \n");
 			gets_s(temp, CHAR_MAX);
 
-			Chinese = temp[0];
 			nums = temp[0] - '0';
 
 			//强制用户输入的前几个字符必须是数字
-			while (Chinese < 0 || isdigit(temp[0]) == 0 || nums == 0)
+			while (temp[0] < 0 || isdigit(temp[0]) == 0 || nums == 0)
 			{
 				PrintError(4);
 				gets_s(temp, CHAR_MAX);
 
-				Chinese = temp[0];
 				nums = temp[0] - '0';
 			}
 			//将用户输入的前几个数字, 转为int类型

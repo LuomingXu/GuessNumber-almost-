@@ -22,7 +22,7 @@ void PrintMeau()
 	printf("3.保存排行榜到\"C:\\\\RankList.txt\"\n");
 	printf("P.S. 最多可以保存10组用户数据\n");
 	printf("     输入\"0\"退出\n");
-	printf("Copyright @  2017 Xu Luoming.All Right Reserved\n");//C语言似乎不能显示©, 那就只能退而求其次了...
+	printf("Copyright (c) 2017 Xu Luoming.All Right Reserved\n");//C语言似乎不能显示©, 那就只能退而求其次了...
 }
 //次菜单打印
 void PrintSmallMeau()
@@ -50,7 +50,7 @@ void PrintExit()
 	printf("\n");
 	printf("********************欢迎使用*******************\n");
 	printf("**********************再见!********************\n");
-	printf("Copyright @  2017 Xu Luoming.All Right Reserved\n");
+	printf("Copyright (c) 2017 Xu Luoming.All Right Reserved\n");
 }
 //打印退出菜单
 void PrintExitMeau()

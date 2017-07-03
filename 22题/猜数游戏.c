@@ -47,7 +47,7 @@ int main()
 				}
 				break;
 			case 2:
-				PrintRankList(Game);
+				PrintRankList(Game,GamerName);
 				break;
 			case 3:
 				SaveRankList(Game);

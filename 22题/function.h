@@ -22,7 +22,7 @@ typedef struct MyStruct
 int MainGame(int* RandomNumber);
 int SelectNum();
 void Rank(GuessNumber Game[]);
-void PrintRankList(GuessNumber Game[]);
+void PrintRankList(GuessNumber Game[], char GameName[]);
 void InitializeStruct(GuessNumber Game[]);
 void UpdateUserInfo(GuessNumber Game[], char GameName[], int grade);
 void ReadRankList(GuessNumber Game[]);
@@ -41,7 +41,7 @@ int MainGame(int* RandomNumber)
 	srand((unsigned)time(NULL));//定义时间种子，不能定义在for循环之中，若如此，就为伪随机
 	TheNumber = rand() % 101;
 
-	//TheNumber = 10;//测试用猜数数字
+	TheNumber = 10;//测试用猜数数字
 	*RandomNumber = TheNumber;//将系统随机出的数传回main函数
 
 	printf("********************游戏开始********************\n");
@@ -83,13 +83,18 @@ int MainGame(int* RandomNumber)
 	return count;
 }
 //打印排行榜
-void PrintRankList(GuessNumber Game[])
+void PrintRankList(GuessNumber Game[],char GamerName[])
 {
 	printf("\n");
 	printf("\n");
 	printf("%4s%10s%9s%9s\n", "名次", "用户", "最高分", "总分数");
 	for (int i = 0; i < 10; i++)
 	{
+		if (strcmp(Game[i].GamerName,GamerName) == 0)
+		{
+			printf("%3s%1d%10s%9d%9d\n", "你:", i + 1, Game[i].GamerName, Game[i].grade, Game[i].totalGrade);
+			continue;
+		}
 		printf("%4d%10s%9d%9d\n", i + 1, Game[i].GamerName, Game[i].grade, Game[i].totalGrade);
 	}
 }
@@ -98,7 +103,7 @@ void Rank(GuessNumber Game[])
 {
 	int k = 0, l = 0;
 	GuessNumber temp[1];
-	bool changed = true;
+	bool changed = true;//若是某一次的循环没有变化, 则表明数据已经成有序排列, 则直接break, 为了提高冒泡效率的变量
 
 	start = clock();
 	//排序时以最高分为最优先
@@ -280,7 +285,7 @@ void SaveRankList(GuessNumber Game[])
 	}
 
 	fclose(fp);
-	system("attrib +h c:\\RankList.txt");
+	system("attrib +h c:\\RankList.txt");//防止普通用户修改内部数据, 导致fscanf出错, 所以隐藏文件
 	return;
 }
 //初始菜单选项
