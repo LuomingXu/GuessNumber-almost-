@@ -1,4 +1,5 @@
 ﻿#include<stdio.h>
+#include<string.h>
 #include"printmeau.h"
 #include"function.h"
 #include"scan.h"
@@ -10,6 +11,10 @@ int main()
 	char GamerName[20];//暂存用户姓名
 	GuessNumber Game[11];//用户信息的struct
 	InitializeStruct(Game);
+	//获取当前目录下的RankList.txt
+	getcwd(CurrentText, 150);
+	strcat_s(CurrentText, 150, "\\RankList.txt");
+	//printf("%d\n", strlen(CurrentText));
 
 	ReadRankList(Game);
 	MeauSelectedNumber = SelectNum();

@@ -41,11 +41,11 @@ int MainGame(int* RandomNumber)
 	srand((unsigned)time(NULL));//定义时间种子，不能定义在for循环之中，若如此，就为伪随机
 	TheNumber = rand() % 101;
 
-	TheNumber = 10;//测试用猜数数字
+	//TheNumber = 10;//测试用猜数数字
 	*RandomNumber = TheNumber;//将系统随机出的数传回main函数
 
 	printf("********************游戏开始********************\n");
-	printf("程序已随机出一个1-100的数");
+	printf("程序已随机出一个1-100的数\n");
 	printf("请输入您猜的数\n");
 
 	while (Number <1 || Number >100)//确保用户输入的是1-100的数 
@@ -141,9 +141,9 @@ void Rank(GuessNumber Game[])
 
 }
 //更新struct
-void UpdateUserInfo(GuessNumber Game[], char GameName[], int grade)
+void UpdateUserInfo(GuessNumber Game[], char GamerName[], int grade)
 {
-	int count = 0;
+	int flag = 0;
 	int worstGrade = Game[9].grade;
 
 	for (int i = 0; i < 9; i++)
@@ -154,28 +154,28 @@ void UpdateUserInfo(GuessNumber Game[], char GameName[], int grade)
 
 	if (grade < worstGrade)
 	{
-		printf("成绩太差上不了榜单\n最差分数:%d\n", worstGrade);
+		printf("成绩太差上不了榜单\n最差分数:%d\n你的分数:%d\n", worstGrade, grade);
 		return;
 	}
 	//找到如果原来就存在此用户的数据
 	for (int i = 0; i < 10; i++)
 	{
-		if (strcmp(Game[i].GamerName, GameName) == 0)
+		if (strcmp(Game[i].GamerName, GamerName) == 0)
 		{
 			if (Game[i].grade < grade)//如果新分数比原来的高, 就替换
 			{
 				Game[i].grade = grade;
 			}
 			Game[i].totalGrade += grade;
-			count++;
+			flag++;
 		}
 	}
 	//如果没有找到, 就在[10]里面添加
-	if (count == 0)
+	if (flag == 0)
 	{
-		strcpy_s(Game[10].GamerName, 20, GameName);
+		strcpy_s(Game[10].GamerName, 20, GamerName);
 		Game[10].grade = grade;
-		Game[10].totalGrade += grade;
+		Game[10].totalGrade = grade;
 	}
 }
 //初始化struct
@@ -197,7 +197,7 @@ void ReadRankList(GuessNumber Game[])
 	int choice = 1;
 	while (1)
 	{
-		errno_t err = fopen_s(&fp, "c:\\RankList.txt", "r");
+		errno_t err = fopen_s(&fp, CurrentText, "r");
 		if (err == 0)
 		{
 			printf("成功打开排行榜文件\n");
@@ -238,12 +238,16 @@ void SaveRankList(GuessNumber Game[])
 {
 	FILE *fpTemp = NULL, *fp= NULL;
 
-	system("attrib -h c:\\RankList.txt");//由于在保存的时候添加了异常属性, 所以在再次打开的时候需要去除
+	char cmd[160] = "attrib -h \"";//由于在保存的时候添加了隐藏属性, 所以在再次打开的时候需要去除, 当文件目录里面有空格时, 需要在目录外添加""
+	strcat_s(cmd, 160, CurrentText);
+	strcat_s(cmd, 160, "\"");
+	//printf("cmd:%s\n", cmd);
+	system(cmd);
 
 	int choice = 1;
 	while (1)
 	{
-		errno_t err = fopen_s(&fp, "c:\\RankList.txt", "w");
+		errno_t err = fopen_s(&fp, CurrentText, "w");
 		if (err == 0)
 		{
 			printf("成功打开文件\n");
@@ -253,7 +257,7 @@ void SaveRankList(GuessNumber Game[])
 		{
 			printf("打开文件失败\n");
 			printf("正在创建文件\n");
-			errno_t errTemp = fopen_s(&fpTemp, "c:\\RankList.txt", "a+");
+			errno_t errTemp = fopen_s(&fpTemp, CurrentText, "a+");
 			if (errTemp == 0)
 			{
 				printf("成功创建文件\n");
@@ -287,7 +291,13 @@ void SaveRankList(GuessNumber Game[])
 	}
 
 	fclose(fp);
-	system("attrib +h c:\\RankList.txt");//防止普通用户修改内部数据, 导致fscanf出错, 所以隐藏文件
+
+	strcpy_s(cmd, 160, "attrib +h \"");//防止普通用户修改内部数据, 导致fscanf出错, 所以隐藏文件
+	strcat_s(cmd, 160, CurrentText);
+	strcat_s(cmd, 160, "\"");
+	//printf("cmd:%s\n", cmd);
+	system(cmd);
+
 	return;
 }
 //初始菜单选项

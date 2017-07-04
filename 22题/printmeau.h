@@ -12,6 +12,9 @@ void PrintExitMeau();
 void PrintFileChoice();
 void PrintError(int i);
 
+//保存当前目录的char[]
+char CurrentText[100];
+
 //主菜单打印
 void PrintMeau()
 {
@@ -19,7 +22,8 @@ void PrintMeau()
 	printf("********欢迎来到猜数游戏********\n");
 	printf("1.输入玩家姓名\n");
 	printf("2.显示排行榜\n");
-	printf("3.保存排行榜到\"C:\\\\RankList.txt\"\n");
+	printf("3.保存排行榜到\"");
+	printf("%s\"\n",CurrentText);
 	printf("P.S. 最多可以保存10组用户数据\n");
 	printf("     输入\"0\"退出\n");
 	printf("Copyright (c) 2017 Xu Luoming.All Right Reserved\n");//C语言似乎不能显示©, 那就只能退而求其次了...
@@ -31,7 +35,8 @@ void PrintSmallMeau()
 	printf("********继续猜数游戏吗********\n");
 	printf("1.输入玩家姓名\n");
 	printf("2.显示排行榜\n");
-	printf("3.保存排行榜到\"C:\\\\RankList.txt\"\n");
+	printf("3.保存排行榜到\"");
+	printf("%s\"\n", CurrentText);
 	printf("P.S. 最多可以保存10组用户数据\n");
 	printf("     输入\"0\"退出\n");
 }
