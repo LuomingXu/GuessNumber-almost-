@@ -7,7 +7,7 @@
 
 int main()
 {
-	int RandomNum = 0;
+	int RandomNum = 0;//系统随机出来的数
 	int MeauSelectedNumber = 10;//菜单选择的数字
 	char GamerName[20];//暂存用户姓名
 	GuessNumber Game[11];//用户信息的struct

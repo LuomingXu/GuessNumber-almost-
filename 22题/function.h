@@ -7,7 +7,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<stdbool.h>
-#include<time.h>//为了测试排序所用时间的include
+#include<time.h>//为了测试排序所用时间的include, 但由于数据太少, 使用时间极少, 有点鸡肋/抠鼻
 #include"printmeau.h"
 #include"scan.h"
 
@@ -106,21 +106,21 @@ void Rank(GuessNumber Game[])
 	bool changed = true;//若是某一次的循环没有变化, 则表明数据已经成有序排列, 则直接break, 为了提高冒泡效率的变量
 
 	start = clock();
-	//排序时以最高分为最优先
+	
 	for (k = 1; k < 11 && changed == true; k++)
 	{
 		changed = false;
 		for (l = 0; l < 11 - k; l++)
 		{
 			if (Game[l].grade < Game[l + 1].grade)
-			{
+			{//排序时以最高分为最优先
 				temp[0] = Game[l];
 				Game[l] = Game[l + 1];
 				Game[l + 1] = temp[0];
 				changed = true;
 			}
-			else if (Game[l].grade == Game[l + 1].grade && Game[l].totalGrade < Game[l + 1].totalGrade)//总分为亚级的排序
-			{
+			else if (Game[l].grade == Game[l + 1].grade && Game[l].totalGrade < Game[l + 1].totalGrade)
+			{//总分为亚级的排序
 				temp[0] = Game[l];
 				Game[l] = Game[l + 1];
 				Game[l + 1] = temp[0];
