@@ -1,5 +1,6 @@
 ﻿#include<stdio.h>
 #include<string.h>
+#include<direct.h>
 #include"printmeau.h"
 #include"function.h"
 #include"scan.h"
@@ -11,8 +12,8 @@ int main()
 	char GamerName[20];//暂存用户姓名
 	GuessNumber Game[11];//用户信息的struct
 	InitializeStruct(Game);
-	//获取当前目录下的RankList.txt
-	getcwd(CurrentText, 150);
+	//获取当前目录下的RankList.txt, 如果没有, 会在Save函数中创建, 便于下次启动时读取
+	_getcwd(CurrentText, 150);
 	strcat_s(CurrentText, 150, "\\RankList.txt");
 	//printf("%d\n", strlen(CurrentText));
 
@@ -41,7 +42,7 @@ int main()
 					printf("您总共猜了\"%d\"次\n", count);
 					//将此用户与排行榜内的用户比较, 若是高于排行榜内用户则将此赋值进struct内
 					UpdateUserInfo(Game, GamerName, grade);
-					printf("***进行排序***\n");
+					printf("\n***进行排序***\n");
 					Rank(Game);//输入了新的数据, 需要进行排序
 					printf("***排序完成***\n");
 				}

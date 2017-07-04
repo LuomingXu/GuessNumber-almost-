@@ -41,7 +41,7 @@ int MainGame(int* RandomNumber)
 	srand((unsigned)time(NULL));//定义时间种子，不能定义在for循环之中，若如此，就为伪随机
 	TheNumber = rand() % 101;
 
-	//TheNumber = 10;//测试用猜数数字
+	TheNumber = 10;//测试用猜数数字
 	*RandomNumber = TheNumber;//将系统随机出的数传回main函数
 
 	printf("********************游戏开始********************\n");
@@ -205,7 +205,7 @@ void ReadRankList(GuessNumber Game[])
 		}
 		else
 		{
-			printf("打开排行榜文件失败\n");
+			printf("打开排行榜文件失败\n或许不存在此文件\n程序会在保存排行榜数据时创建此文件\n");
 		}
 
 		PrintFileChoice();
@@ -241,8 +241,13 @@ void SaveRankList(GuessNumber Game[])
 	char cmd[160] = "attrib -h \"";//由于在保存的时候添加了隐藏属性, 所以在再次打开的时候需要去除, 当文件目录里面有空格时, 需要在目录外添加""
 	strcat_s(cmd, 160, CurrentText);
 	strcat_s(cmd, 160, "\"");
-	//printf("cmd:%s\n", cmd);
-	system(cmd);
+	printf("cmd:%s\n", cmd);
+	errno_t err = fopen_s(&fp, CurrentText, "r");//若存在此文件, 才会在写入之前去除隐藏属性
+	if (err == 0)
+	{
+		system(cmd);
+	}
+	fclose(fp);//使用之后必须关闭才能再打开
 
 	int choice = 1;
 	while (1)
@@ -250,7 +255,7 @@ void SaveRankList(GuessNumber Game[])
 		errno_t err = fopen_s(&fp, CurrentText, "w");
 		if (err == 0)
 		{
-			printf("成功打开文件\n");
+			printf("成功打开/创建文件\n");
 			break;
 		}
 		else
@@ -260,7 +265,7 @@ void SaveRankList(GuessNumber Game[])
 			errno_t errTemp = fopen_s(&fpTemp, CurrentText, "a+");
 			if (errTemp == 0)
 			{
-				printf("成功创建文件\n");
+				printf("成功创建文件\n可尝试再次保存\n");
 			}
 			else
 			{
@@ -280,7 +285,7 @@ void SaveRankList(GuessNumber Game[])
 	int count = 0;
 	for (int i = 0; i < 10; i++)
 	{
-		//在打印时要为scanf考虑, 在之间一定要留空格, 因为你并不知道这6, 10个字符是否占满了, 若是占满了, 字符之间就没有空格了, 就会出现错误
+		//在打印时要为scanf考虑, 在之间一定要留空格, 因为你并不知道这6, 10个字符是否占满了, 若是占满了, 字符之间就没有空格了, 在后续读取时就会出现错误
 		fprintf_s(fp, "%6d %10s %9d %9d\n", i + 1, Game[i].GamerName, Game[i].grade, Game[i].totalGrade);
 		count++;
 	}
@@ -295,7 +300,7 @@ void SaveRankList(GuessNumber Game[])
 	strcpy_s(cmd, 160, "attrib +h \"");//防止普通用户修改内部数据, 导致fscanf出错, 所以隐藏文件
 	strcat_s(cmd, 160, CurrentText);
 	strcat_s(cmd, 160, "\"");
-	//printf("cmd:%s\n", cmd);
+	printf("cmd:%s\n", cmd);
 	system(cmd);
 
 	return;
