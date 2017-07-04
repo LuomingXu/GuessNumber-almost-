@@ -236,19 +236,19 @@ void ReadRankList(GuessNumber Game[])
 //向文件保存排行榜数据
 void SaveRankList(GuessNumber Game[])
 {
-	FILE *fpTemp = NULL, *fp= NULL;
+	FILE *fpTemp = NULL, *fptemp2, *fp= NULL;
 
-	char cmd[160] = "attrib -h \"";//由于在保存的时候添加了隐藏属性, 所以在再次打开的时候需要去除, 当文件目录里面有空格时, 需要在目录外添加""
+	char cmd[160] = "attrib -r -h \"";//由于在保存的时候添加了隐藏属性, 所以在再次打开的时候需要去除, 当文件目录里面有空格时, 需要在目录外添加""
 	strcat_s(cmd, 160, CurrentText);
 	strcat_s(cmd, 160, "\"");
 	printf("cmd:%s\n", cmd);
-	errno_t err = fopen_s(&fp, CurrentText, "r");//若存在此文件, 才会在写入之前去除隐藏属性
+	errno_t err = fopen_s(&fptemp2, CurrentText, "r");//若存在此文件, 才会在写入之前去除隐藏属性
 	if (err == 0)
 	{
 		system(cmd);
+		fclose(fptemp2);//使用之后必须关闭才能再打开
 	}
-	fclose(fp);//使用之后必须关闭才能再打开
-
+	
 	int choice = 1;
 	while (1)
 	{
@@ -297,7 +297,7 @@ void SaveRankList(GuessNumber Game[])
 
 	fclose(fp);
 
-	strcpy_s(cmd, 160, "attrib +h \"");//防止普通用户修改内部数据, 导致fscanf出错, 所以隐藏文件
+	strcpy_s(cmd, 160, "attrib +r +h \"");//防止普通用户修改内部数据, 导致fscanf出错, 所以隐藏文件
 	strcat_s(cmd, 160, CurrentText);
 	strcat_s(cmd, 160, "\"");
 	printf("cmd:%s\n", cmd);
