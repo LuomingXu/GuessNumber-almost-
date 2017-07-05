@@ -41,7 +41,7 @@ int MainGame(int* RandomNumber)
 	srand((unsigned)time(NULL));//定义时间种子，不能定义在for循环之中，若如此，就为伪随机
 	TheNumber = rand() % 101;
 
-	TheNumber = 10;//测试用猜数数字
+	//TheNumber = 10;//测试用猜数数字
 	*RandomNumber = TheNumber;//将系统随机出的数传回main函数
 
 	printf("********************游戏开始********************\n");
@@ -241,12 +241,12 @@ void SaveRankList(GuessNumber Game[])
 	char cmd[160] = "attrib -r -h \"";//由于在保存的时候添加了隐藏属性, 所以在再次打开的时候需要去除, 当文件目录里面有空格时, 需要在目录外添加""
 	strcat_s(cmd, 160, CurrentText);
 	strcat_s(cmd, 160, "\"");
-	printf("cmd:%s\n", cmd);
+	//printf("cmd:%s\n", cmd);
 	errno_t err = fopen_s(&fptemp2, CurrentText, "r");//若存在此文件, 才会在写入之前去除隐藏属性
 	if (err == 0)
 	{
 		system(cmd);
-		fclose(fptemp2);//使用之后必须关闭才能再打开
+		fclose(fptemp2);//使用之后必须关闭才能再打开, 只有打开成功才需要fclose
 	}
 	
 	int choice = 1;
@@ -300,7 +300,7 @@ void SaveRankList(GuessNumber Game[])
 	strcpy_s(cmd, 160, "attrib +r +h \"");//防止普通用户修改内部数据, 导致fscanf出错, 所以隐藏文件
 	strcat_s(cmd, 160, CurrentText);
 	strcat_s(cmd, 160, "\"");
-	printf("cmd:%s\n", cmd);
+	//printf("cmd:%s\n", cmd);
 	system(cmd);
 
 	return;
